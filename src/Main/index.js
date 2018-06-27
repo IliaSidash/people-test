@@ -11,9 +11,9 @@ const Container = styled.div`
   padding-top: 15px;
 `;
 
-export default ({ people, updatePeopleList }) => (
+export default ({ people, updatePeopleList, setActiveColor }) => (
   <Container>
     <Search updatePeopleList={updatePeopleList} />
-    <PeopleList people={people} />
+    <PeopleList setActiveColor={setActiveColor} people={people} />
   </Container>
 );

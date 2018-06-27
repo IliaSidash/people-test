@@ -6,27 +6,44 @@ const Colors = styled.div`
   margin: 0 -5px;
 `;
 
-const ColorRed = styled.div`
+const Color = styled.div`
   margin: 0 5px;
-  width: 20px;
-  height: 10px;
-  background-color: red;
+  width: 25px;
+  height: 15px;
+  cursor: pointer;
+  background-color: ${props => props.fill};
+  border: 3px solid;
+  border-color: ${props => (props.active ? "#000" : "#fff")};
 `;
 
-const ColorGreen = ColorRed.extend`
-  background-color: green;
-`;
+const colors = [
+  {
+    id: "red",
+    color: "red"
+  },
+  {
+    id: "yellow",
+    color: "yellow"
+  },
+  {
+    id: "green",
+    color: "green"
+  }
+];
 
-const ColorYellow = ColorRed.extend`
-  background-color: yellow;
-`;
+const getColor = (id, color, activeColor, func) => {
+  if (color === activeColor) {
+    return <Color key={id} fill={color} active onClick={() => func(color)} />;
+  }
+  return <Color key={id} fill={color} onClick={() => func(color)} />;
+};
 
-export default ({ colors }) => {
-  // console.log(colors[1].id);
+export default ({ activeColor, setActiveColor }) => {
   return (
     <Colors>
-      {/* {colors.map(color => <p>{color.id}</p>)} */}
-      {/* {colors.map(color => <ColorRed key={color.id} />)} */}
+      {colors.map(color =>
+        getColor(color.id, color.color, activeColor, setActiveColor)
+      )}
     </Colors>
   );
 };

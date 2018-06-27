@@ -17,6 +17,25 @@ const Input = styled.input`
   border: none;
   flex-grow: 1;
 `;
+
+const colors = [
+  {
+    id: "red",
+    color: "red",
+    active: true
+  },
+  {
+    id: "yellow",
+    color: "yellow",
+    active: false
+  },
+  {
+    id: "green",
+    color: "green",
+    active: false
+  }
+];
+
 class SearchComponent extends React.Component {
   state = { value: "" };
 
@@ -39,7 +58,7 @@ class SearchComponent extends React.Component {
           value={this.state.value}
           placeholder="Поиск"
         />
-        <ColorPicker />
+        <ColorPicker colors={colors} />
       </Search>
     );
   }

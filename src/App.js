@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { filter } from "fuzzaldrin";
+import { set } from "lodash/fp";
 
 import Main from "./Main";
 
@@ -7,86 +8,22 @@ const people = [
   {
     id: "1",
     name: "Brooklyn Heller",
-    colors: [
-      {
-        id: "red",
-        color: "red",
-        active: true
-      },
-      {
-        id: "yellow",
-        color: "yellow",
-        active: false
-      },
-      {
-        id: "green",
-        color: "green",
-        active: false
-      }
-    ]
+    activeColor: "red"
   },
   {
     id: "2",
     name: "Miss Santa Brown",
-    colors: [
-      {
-        id: "red",
-        color: "red",
-        active: true
-      },
-      {
-        id: "yellow",
-        color: "yellow",
-        active: false
-      },
-      {
-        id: "green",
-        color: "green",
-        active: false
-      }
-    ]
+    activeColor: "red"
   },
   {
     id: "3",
     name: "Mr. Berta Kuhn",
-    colors: [
-      {
-        id: "red",
-        color: "red",
-        active: true
-      },
-      {
-        id: "yellow",
-        color: "yellow",
-        active: false
-      },
-      {
-        id: "green",
-        color: "green",
-        active: false
-      }
-    ]
+    activeColor: "green"
   },
   {
     id: "4",
     name: "Cristal Town",
-    colors: [
-      {
-        id: "red",
-        color: "red",
-        active: true
-      },
-      {
-        id: "yellow",
-        color: "yellow",
-        active: false
-      },
-      {
-        id: "green",
-        color: "green",
-        active: false
-      }
-    ]
+    activeColor: "yellow"
   }
 ];
 
@@ -743,11 +680,21 @@ class App extends Component {
   };
 
   updatePeopleList = value => {
-    console.log(value);
-
     const results = filter(people, value, { key: "name" });
+
     this.setState({
       people: results
+    });
+  };
+
+  setActiveColor = (index, color) => {
+    const result = [...this.state.people];
+    result[index].activeColor = color;
+    console.log(this.state.people);
+    console.log(result);
+
+    this.setState({
+      people: result
     });
   };
 
@@ -756,6 +703,7 @@ class App extends Component {
       <Main
         people={this.state.people}
         updatePeopleList={this.updatePeopleList}
+        setActiveColor={this.setActiveColor}
       />
     );
   }

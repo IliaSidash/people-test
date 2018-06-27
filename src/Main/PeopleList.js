@@ -25,15 +25,18 @@ const Person = styled.div`
   padding: 5px 0;
 `;
 
-export default ({ people }) => (
+export default ({ people, setActiveColor }) => (
   <People>
     <div>
-      <Result>Найдено: 30 из 1000002</Result>
+      <Result>Найдено: {people.length} из 100000</Result>
       <PeopleList>
-        {people.map(person => (
+        {people.map((person, index) => (
           <Person key={person.id}>
             {person.name}
-            <ColorPicker colors={person.colors} />
+            <ColorPicker
+              activeColor={person.activeColor}
+              setActiveColor={color => setActiveColor(index, color)}
+            />
           </Person>
         ))}
       </PeopleList>
