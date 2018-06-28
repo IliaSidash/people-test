@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import PeopleList from './PeopleList';
 import Search from './Search';
@@ -11,16 +12,22 @@ const Container = styled.div`
   padding-top: 15px;
 `;
 
-export default ({
+const Main = ({
   people,
   peopleList,
   colors,
-  updatePeopleList,
+  colorForSorted,
   setActiveColor,
-  searchByColor,
+  handleInput,
+  handleColorForFilter,
 }) => (
   <Container>
-    <Search colors={colors} updatePeopleList={updatePeopleList} />
+    <Search
+      colors={colors}
+      handleInput={handleInput}
+      handleColorForFilter={handleColorForFilter}
+      colorForSorted={colorForSorted}
+    />
     <PeopleList
       people={people}
       peopleList={peopleList}
@@ -29,3 +36,19 @@ export default ({
     />
   </Container>
 );
+
+Main.propTypes = {
+  people: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    activeColor: PropTypes.string,
+  }).isRequired,
+  peopleList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colorForSorted: PropTypes.string.isRequired,
+  setActiveColor: PropTypes.func.isRequired,
+  handleInput: PropTypes.func.isRequired,
+  handleColorForFilter: PropTypes.func.isRequired,
+};
+
+export default Main;

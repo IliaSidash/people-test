@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import ColorPicker from './ColorPicker';
 import Statistic from './Statistic';
@@ -21,7 +22,7 @@ const Person = styled.div`
   padding: 5px 0;
 `;
 
-export default ({
+const PeopleListComponent = ({
   people, peopleList, colors, setActiveColor,
 }) => (
   <People>
@@ -35,12 +36,25 @@ export default ({
             <ColorPicker
               activeColor={people[person].activeColor}
               colors={colors}
-              setActiveColor={color => setActiveColor(people[person].id, color)}
+              handleClick={color => setActiveColor(people[person].id, color)}
             />
           </Person>
         ))}
       </PeopleList>
     </div>
-    <Statistic />
+    <Statistic people={people} />
   </People>
 );
+
+PeopleListComponent.propTypes = {
+  people: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    activeColor: PropTypes.string,
+  }).isRequired,
+  peopleList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setActiveColor: PropTypes.func.isRequired,
+};
+
+export default PeopleListComponent;

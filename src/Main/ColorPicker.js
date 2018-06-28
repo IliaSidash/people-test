@@ -14,43 +14,26 @@ const Color = styled.div`
   cursor: pointer;
   background-color: ${({ fill }) => fill};
   border: 3px solid;
-  border-color: ${({ active }) => (active ? '#000' : '#fff')};
+  border-color: ${({ active }) => (active ? 'blue' : 'white')};
 `;
 
-const getColor = (color, activeColor, setActiveColor, filterByColor) => {
-  if (filterByColor) {
-    return (
+const ColorPickerComponent = ({ activeColor, colors, handleClick }) => (
+  <Colors>
+    {colors.map(color => (
       <Color
         key={color}
         fill={color}
         active={activeColor === color}
-        onClick={() => filterByColor(color)}
+        onClick={() => handleClick(color)}
       />
-    );
-  }
-  if (color === activeColor) {
-    return <Color key={color} fill={color} active onClick={() => setActiveColor(color)} />;
-  }
-  return <Color key={color} fill={color} onClick={() => setActiveColor(color)} />;
-};
-
-const ColorPickerComponent = ({
-  activeColor, colors, setActiveColor, filterByColor,
-}) => (
-  <Colors>
-    {colors.map(color => getColor(color, activeColor, setActiveColor, filterByColor))}
+    ))}
   </Colors>
 );
-
-ColorPickerComponent.defaultProps = {
-  setActiveColor: () => null,
-};
 
 ColorPickerComponent.propTypes = {
   activeColor: PropTypes.string.isRequired,
   colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setActiveColor: PropTypes.func,
-  filterByColor: PropTypes.func,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default ColorPickerComponent;

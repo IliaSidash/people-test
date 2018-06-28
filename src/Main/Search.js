@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import ColorPicker from './ColorPicker';
 
@@ -21,53 +22,38 @@ const Input = styled.input`
 class SearchComponent extends React.Component {
   state = {
     value: '',
-    activeColor: '',
   };
 
   handleChange = (e) => {
     const { value } = e.target;
-    const { activeColor } = this.state;
-    const { updatePeopleList } = this.props;
+    const { handleInput } = this.props;
 
     this.setState({
       value,
     });
-
-    updatePeopleList(value, activeColor);
-  };
-
-  handleColor = (color) => {
-    const { value } = this.state;
-    const { updatePeopleList } = this.props;
-
-    this.setState(
-      (prevState) => {
-        if (prevState.activeColor === color) {
-          return {
-            activeColor: null,
-          };
-        }
-        return {
-          activeColor: color,
-        };
-      },
-      () => {
-        const { activeColor } = this.state;
-        updatePeopleList(value, activeColor);
-      },
-    );
+    handleInput(value);
   };
 
   render() {
-    const { colors } = this.props;
-    const { activeColor } = this.state;
-
+    const { colors, colorForSorted, handleColorForFilter } = this.props;
+    const { value } = this.state;
     return (
       <Search>
-        <Input onChange={this.handleChange} value={this.state.value} placeholder="Поиск" />
-        <ColorPicker colors={colors} filterByColor={this.handleColor} activeColor={activeColor} />
+        <Input onChange={this.handleChange} value={value} placeholder="Поиск" />
+        <ColorPicker
+          colors={colors}
+          activeColor={colorForSorted}
+          handleClick={handleColorForFilter}
+        />
       </Search>
     );
   }
 }
+
+SearchComponent.propTypes = {
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colorForSorted: PropTypes.string.isRequired,
+  handleInput: PropTypes.func.isRequired,
+  handleColorForFilter: PropTypes.func.isRequired,
+};
 export default SearchComponent;
