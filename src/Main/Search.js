@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import ColorPicker from "./ColorPicker";
+import ColorPicker from './ColorPicker';
 
 const Search = styled.div`
   display: flex;
@@ -18,47 +18,54 @@ const Input = styled.input`
   flex-grow: 1;
 `;
 
-const colors = [
-  {
-    id: "red",
-    color: "red",
-    active: true
-  },
-  {
-    id: "yellow",
-    color: "yellow",
-    active: false
-  },
-  {
-    id: "green",
-    color: "green",
-    active: false
-  }
-];
-
 class SearchComponent extends React.Component {
-  state = { value: "" };
+  state = {
+    value: '',
+    activeColor: '',
+  };
 
-  handleChange = e => {
-    const value = e.target.value;
+  handleChange = (e) => {
+    const { value } = e.target;
+    const { activeColor } = this.state;
     const { updatePeopleList } = this.props;
 
     this.setState({
-      value
+      value,
     });
 
-    updatePeopleList(value);
+    updatePeopleList(value, activeColor);
+  };
+
+  handleColor = (color) => {
+    const { value } = this.state;
+    const { updatePeopleList } = this.props;
+
+    this.setState(
+      (prevState) => {
+        if (prevState.activeColor === color) {
+          return {
+            activeColor: null,
+          };
+        }
+        return {
+          activeColor: color,
+        };
+      },
+      () => {
+        const { activeColor } = this.state;
+        updatePeopleList(value, activeColor);
+      },
+    );
   };
 
   render() {
+    const { colors } = this.props;
+    const { activeColor } = this.state;
+
     return (
       <Search>
-        <Input
-          onChange={this.handleChange}
-          value={this.state.value}
-          placeholder="Поиск"
-        />
-        <ColorPicker colors={colors} />
+        <Input onChange={this.handleChange} value={this.state.value} placeholder="Поиск" />
+        <ColorPicker colors={colors} filterByColor={this.handleColor} activeColor={activeColor} />
       </Search>
     );
   }

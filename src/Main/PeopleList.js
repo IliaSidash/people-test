@@ -1,16 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import ColorPicker from "./ColorPicker";
-import Statistic from "./Statistic";
+import ColorPicker from './ColorPicker';
+import Statistic from './Statistic';
+import Result from './Result';
 
 const People = styled.div`
   display: flex;
-`;
-
-const Result = styled.div`
-  text-align: right;
-  max-width: 400px;
 `;
 
 const PeopleList = styled.div`
@@ -25,17 +21,21 @@ const Person = styled.div`
   padding: 5px 0;
 `;
 
-export default ({ people, setActiveColor }) => (
+export default ({
+  people, peopleList, colors, setActiveColor,
+}) => (
   <People>
     <div>
-      <Result>Найдено: {people.length} из 100000</Result>
+      <Result people={people} peopleList={peopleList} />
+
       <PeopleList>
-        {people.map((person, index) => (
-          <Person key={person.id}>
-            {person.name}
+        {peopleList.map(person => (
+          <Person key={people[person].id}>
+            {people[person].name}
             <ColorPicker
-              activeColor={person.activeColor}
-              setActiveColor={color => setActiveColor(index, color)}
+              activeColor={people[person].activeColor}
+              colors={colors}
+              setActiveColor={color => setActiveColor(people[person].id, color)}
             />
           </Person>
         ))}

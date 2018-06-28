@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Colors = styled.div`
   display: flex;
@@ -11,39 +12,45 @@ const Color = styled.div`
   width: 25px;
   height: 15px;
   cursor: pointer;
-  background-color: ${props => props.fill};
+  background-color: ${({ fill }) => fill};
   border: 3px solid;
-  border-color: ${props => (props.active ? "#000" : "#fff")};
+  border-color: ${({ active }) => (active ? '#000' : '#fff')};
 `;
 
-const colors = [
-  {
-    id: "red",
-    color: "red"
-  },
-  {
-    id: "yellow",
-    color: "yellow"
-  },
-  {
-    id: "green",
-    color: "green"
+const getColor = (color, activeColor, setActiveColor, filterByColor) => {
+  if (filterByColor) {
+    return (
+      <Color
+        key={color}
+        fill={color}
+        active={activeColor === color}
+        onClick={() => filterByColor(color)}
+      />
+    );
   }
-];
-
-const getColor = (id, color, activeColor, func) => {
   if (color === activeColor) {
-    return <Color key={id} fill={color} active onClick={() => func(color)} />;
+    return <Color key={color} fill={color} active onClick={() => setActiveColor(color)} />;
   }
-  return <Color key={id} fill={color} onClick={() => func(color)} />;
+  return <Color key={color} fill={color} onClick={() => setActiveColor(color)} />;
 };
 
-export default ({ activeColor, setActiveColor }) => {
-  return (
-    <Colors>
-      {colors.map(color =>
-        getColor(color.id, color.color, activeColor, setActiveColor)
-      )}
-    </Colors>
-  );
+const ColorPickerComponent = ({
+  activeColor, colors, setActiveColor, filterByColor,
+}) => (
+  <Colors>
+    {colors.map(color => getColor(color, activeColor, setActiveColor, filterByColor))}
+  </Colors>
+);
+
+ColorPickerComponent.defaultProps = {
+  setActiveColor: () => null,
 };
+
+ColorPickerComponent.propTypes = {
+  activeColor: PropTypes.string.isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setActiveColor: PropTypes.func,
+  filterByColor: PropTypes.func,
+};
+
+export default ColorPickerComponent;
