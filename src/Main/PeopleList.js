@@ -13,6 +13,8 @@ const People = styled.div`
 const PeopleList = styled.div`
   padding: 5px;
   width: 400px;
+  height: 202px;
+  overflow: auto;
   border: 1px solid #000;
 `;
 
